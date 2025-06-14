@@ -50,10 +50,10 @@ public class Task1 {
 							});
 							if (count[0] > 0) {
 								printStream.print("\n");
-								printStream.print("count: " + count[0]+"\n");
-								printStream.print("distinct: " + distinct[0]+"\n");
-								printStream.print("min: " + min[0]+"\n");
-								printStream.print("max: " + max[0]+"\n");
+								printStream.print("count: " + count[0] + "\n");
+								printStream.print("distinct: " + distinct[0] + "\n");
+								printStream.print("min: " + min[0] + "\n");
+								printStream.print("max: " + max[0] + "\n");
 							}
 						}
 					}
