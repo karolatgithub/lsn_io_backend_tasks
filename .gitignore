@@ -25,3 +25,5 @@ replay_pid*
 /bin/
 /deploy/
 /target/
+/lsn_io_backend_task1/target
+/lsn_io_backend_task2/target
