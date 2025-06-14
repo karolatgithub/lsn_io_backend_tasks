@@ -27,3 +27,5 @@ replay_pid*
 /target/
 /lsn_io_backend_task1/target
 /lsn_io_backend_task2/target
+/lsn_io_backend_task1/target
+/lsn_io_backend_task2/target
