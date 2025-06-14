@@ -16,10 +16,10 @@ public class Task1Test {
 	@Test
 	void testCalculateInputToOutputStreams() throws FileNotFoundException, IOException {
 		try(final ByteArrayOutputStream outputStream=new ByteArrayOutputStream()) {
-			try(final InputStream inputStream = new FileInputStream(new File("inputs/input1.txt"))) {
+			try(final InputStream inputStream = new FileInputStream(new File("inputs/inputTask1.txt"))) {
 				Task1.calculateInputToOutputStreams(inputStream, outputStream);
 			}
-			Assertions.assertArrayEquals(Files.readAllBytes(Paths.get("inputs/output1.txt")),
+			Assertions.assertArrayEquals(Files.readAllBytes(Paths.get("inputs/outputTask1.txt")),
 				outputStream.toByteArray());
 		}
 	}
