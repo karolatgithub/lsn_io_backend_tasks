@@ -9,4 +9,7 @@
 		<artifactId>lsn_io_backend_tasks</artifactId>
 		<version>0.0.1</version>
 	</parent>
+	<properties>
+		<build.main.class>lsn.io.backend.Task2</build.main.class>
+	</properties>
 </project>
