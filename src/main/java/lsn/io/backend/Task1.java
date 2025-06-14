@@ -1,14 +1,13 @@
 package lsn.io.backend;
 
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.PrintStream;
+import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.stream.IntStream;
-import java.io.PrintStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.StandardCharsets;
-import java.io.UnsupportedEncodingException;
-import java.lang.RuntimeException;
 
 public class Task1 {
 
@@ -49,11 +48,11 @@ public class Task1 {
 								printStream.print(item);
 							});
 							if (count[0] > 0) {
-								printStream.print("\n");
-								printStream.print("count: " + count[0] + "\n");
-								printStream.print("distinct: " + distinct[0] + "\n");
-								printStream.print("min: " + min[0] + "\n");
-								printStream.print("max: " + max[0] + "\n");
+								printStream.println();
+								printStream.println("count: " + count[0]);
+								printStream.println("distinct: " + distinct[0]);
+								printStream.println("min: " + min[0]);
+								printStream.println("max: " + max[0]);
 							}
 						}
 					}
