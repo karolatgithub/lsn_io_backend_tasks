@@ -12,6 +12,7 @@
 	<modules>
 		<module>lsn_io_backend_task1</module>
 		<module>lsn_io_backend_task2</module>
+		<module>lsn_io_backend_task3</module>
 	</modules>
 
 	<build>
