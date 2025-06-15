@@ -10,11 +10,13 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class Task2Test {
 
 	@Test
+	@DisplayName("Test Task2")
 	void testCalculateInputToOutputStreams() throws FileNotFoundException, IOException {
 		try (final ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
 			try (final InputStream inputStream = new FileInputStream(
