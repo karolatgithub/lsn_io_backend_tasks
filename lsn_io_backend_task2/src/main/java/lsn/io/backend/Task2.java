@@ -24,7 +24,7 @@ public class Task2 {
 		try (final PrintStream printStream = new PrintStream(outputStream, false, StandardCharsets.UTF_8.toString())) {
 			try (final Scanner inputScaner = new Scanner(inputStream, StandardCharsets.UTF_8.toString())) {
 				while (inputScaner.hasNextLine()) {
-					final Collection<int[]> results = new ArrayList<int[]>();
+					final Collection<Integer[]> results = new ArrayList<Integer[]>();
 					try (final IntStream intStream = Arrays.stream(inputScaner.nextLine().split(" ")).filter(i -> {
 						try {
 							Integer.parseInt(i);
@@ -41,14 +41,14 @@ public class Task2 {
 								return i + first == 13;
 							}).forEach(i -> {
 								if (first < i) {
-									results.add(new int[] { first, i });
+									results.add(new Integer[] { first, i });
 								} else {
-									results.add(new int[] { i, first });
+									results.add(new Integer[] { i, first });
 								}
 							});
 						}
 					}
-					results.stream().sorted((i, j) -> Integer.compare(i[0], j[0])).forEach(i -> {
+					results.stream().sorted((i, j) -> i[0].compareTo(j[0])).forEach(i -> {
 						printStream.println(i[0] + " " + i[1]);
 					});
 				}
