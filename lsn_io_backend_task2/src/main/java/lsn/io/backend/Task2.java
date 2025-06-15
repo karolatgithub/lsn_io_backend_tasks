@@ -5,8 +5,12 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class Task2 {
@@ -20,42 +24,33 @@ public class Task2 {
 		try (final PrintStream printStream = new PrintStream(outputStream, false, StandardCharsets.UTF_8.toString())) {
 			try (final Scanner inputScaner = new Scanner(inputStream, StandardCharsets.UTF_8.toString())) {
 				while (inputScaner.hasNextLine()) {
-					try (final IntStream intStream = Arrays.stream(inputScaner.nextLine().split(" ")).filter(item -> {
+					final Collection<int[]> results = new ArrayList<int[]>();
+					try (final IntStream intStream = Arrays.stream(inputScaner.nextLine().split(" ")).filter(i -> {
 						try {
-							Integer.parseInt(item);
+							Integer.parseInt(i);
 						} catch (Exception ex) {
 							return false;
 						}
 						return true;
 					}).mapToInt(Integer::parseInt)) {
-						final int count[] = { 0 };
-						try (IntStream distinctSortedIntStream = intStream.filter(item -> {
-							return ++count[0] > 0;
-						}).distinct().sorted()) {
-							final int distinct[] = { 0 };
-							final int min[] = { Integer.MAX_VALUE };
-							final int max[] = { Integer.MIN_VALUE };
-							distinctSortedIntStream.boxed().forEach(item -> {
-								if (item < min[0]) {
-									min[0] = item;
+						final List<Integer> list = intStream.mapToObj(i -> i).collect(Collectors.toList());
+						int index = -1;
+						while (++index < list.size()) {
+							final Integer first = list.get(index);
+							list.subList(index + 1, list.size()).stream().filter(i -> {
+								return i + first == 13;
+							}).forEach(i -> {
+								if (first < i) {
+									results.add(new int[] { first, i });
+								} else {
+									results.add(new int[] { i, first });
 								}
-								if (item > max[0]) {
-									max[0] = item;
-								}
-								if (++distinct[0] > 1) {
-									printStream.print(' ');
-								}
-								printStream.print(item);
 							});
-							if (count[0] > 0) {
-								printStream.println();
-								printStream.println("count: " + count[0]);
-								printStream.println("distinct: " + distinct[0]);
-								printStream.println("min: " + min[0]);
-								printStream.println("max: " + max[0]);
-							}
 						}
 					}
+					results.stream().sorted((i, j) -> Integer.compare(i[0], j[0])).forEach(i -> {
+						printStream.println(i[0] + " " + i[1]);
+					});
 				}
 			}
 			printStream.flush();

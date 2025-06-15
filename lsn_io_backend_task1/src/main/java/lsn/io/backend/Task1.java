@@ -20,32 +20,32 @@ public class Task1 {
 		try (final PrintStream printStream = new PrintStream(outputStream, false, StandardCharsets.UTF_8.toString())) {
 			try (final Scanner inputScaner = new Scanner(inputStream, StandardCharsets.UTF_8.toString())) {
 				while (inputScaner.hasNextLine()) {
-					try (final IntStream intStream = Arrays.stream(inputScaner.nextLine().split(" ")).filter(item -> {
+					try (final IntStream intStream = Arrays.stream(inputScaner.nextLine().split(" ")).filter(i -> {
 						try {
-							Integer.parseInt(item);
+							Integer.parseInt(i);
 						} catch (Exception ex) {
 							return false;
 						}
 						return true;
 					}).mapToInt(Integer::parseInt)) {
 						final int count[] = { 0 };
-						try (IntStream distinctSortedIntStream = intStream.filter(item -> {
+						try (IntStream distinctSortedIntStream = intStream.filter(i -> {
 							return ++count[0] > 0;
 						}).distinct().sorted()) {
 							final int distinct[] = { 0 };
 							final int min[] = { Integer.MAX_VALUE };
 							final int max[] = { Integer.MIN_VALUE };
-							distinctSortedIntStream.boxed().forEach(item -> {
-								if (item < min[0]) {
-									min[0] = item;
+							distinctSortedIntStream.boxed().forEach(i -> {
+								if (i < min[0]) {
+									min[0] = i;
 								}
-								if (item > max[0]) {
-									max[0] = item;
+								if (i > max[0]) {
+									max[0] = i;
 								}
 								if (++distinct[0] > 1) {
 									printStream.print(' ');
 								}
-								printStream.print(item);
+								printStream.print(i);
 							});
 							if (count[0] > 0) {
 								printStream.println();
