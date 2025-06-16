@@ -25,6 +25,7 @@ public class Task3 {
 				while (inputScaner.hasNextLine()) {
 					int n = Integer.parseInt(inputScaner.nextLine());
 					final List<Set<Integer>> graphs = new ArrayList<Set<Integer>>();
+					boolean founded = false;
 					while (--n >= 0 && inputScaner.hasNextLine()) {
 						final String[] pair = inputScaner.nextLine().split(" ");
 						final Integer first = Integer.parseInt(pair[0]);
@@ -34,6 +35,7 @@ public class Task3 {
 						if (prev != null) {
 							prev.add(first);
 							prev.add(second);
+							founded = true;
 						} else {
 							graphs.add(new HashSet<Integer>() {
 								{
@@ -43,15 +45,17 @@ public class Task3 {
 							});
 						}
 					}
-					int index = graphs.size();
-					while (--index >= 1) {
-						final Set<Integer> last = graphs.get(index);
-						int j = index;
-						while (--j >= 0) {
-							final Set<Integer> first = graphs.get(j);
-							if (first.stream().filter(i -> last.contains(i)).findFirst().isPresent()) {
-								first.addAll(last);
-								graphs.remove(index);
+					if (founded) {
+						int index = graphs.size();
+						while (--index >= 1) {
+							final Set<Integer> last = graphs.get(index);
+							int j = index;
+							while (--j >= 0) {
+								final Set<Integer> first = graphs.get(j);
+								if (first.stream().filter(i -> last.contains(i)).findFirst().isPresent()) {
+									first.addAll(last);
+									graphs.remove(index);
+								}
 							}
 						}
 					}
