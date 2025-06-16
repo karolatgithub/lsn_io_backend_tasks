@@ -34,11 +34,12 @@ public class Task2 {
 						return true;
 					}).mapToInt(Integer::parseInt)) {
 						final List<Integer> list = intStream.mapToObj(i -> i).collect(Collectors.toList());
-						int index = -1;
-						while (++index < list.size()) {
-							final Integer first = list.get(index);
-							list.subList(index + 1, list.size()).stream().filter(i -> {
-								return i + first == 13;
+						final int[] index = new int[] { -1 };
+						while (++index[0] < list.size()) {
+							final Integer first = list.get(index[0]);
+							final int[] offset = new int[] { 0 };
+							list.stream().filter(i -> {
+								return (++offset[0] > index[0]) && (i + first == 13);
 							}).forEach(i -> {
 								if (first < i) {
 									results.add(new Integer[] { first, i });
