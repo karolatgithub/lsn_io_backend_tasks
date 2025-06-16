@@ -38,9 +38,7 @@ public class Task2 {
 						while (++index[0] < list.size()) {
 							final Integer first = list.get(index[0]);
 							final int[] offset = new int[] { 0 };
-							list.stream().filter(i -> {
-								return (++offset[0] > index[0]) && (i + first == 13);
-							}).forEach(i -> {
+							list.stream().filter(i -> (++offset[0] > index[0]) && (i + first == 13)).forEach(i -> {
 								if (first < i) {
 									results.add(new Integer[] { first, i });
 								} else {
