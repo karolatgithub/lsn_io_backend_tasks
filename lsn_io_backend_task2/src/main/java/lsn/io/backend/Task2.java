@@ -50,7 +50,6 @@ public class Task2 {
 					}
 					results.stream().sorted((i, j) -> i[0].compareTo(j[0])).forEach(i -> {
 						printStream.println(i[0] + " " + i[1]);
-						System.out.println(i[0] + " " + i[1]);
 					});
 				}
 			}

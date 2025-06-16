@@ -23,8 +23,8 @@ public class Task3 {
 		try (final PrintStream printStream = new PrintStream(outputStream, false, StandardCharsets.UTF_8.toString())) {
 			try (final Scanner inputScaner = new Scanner(inputStream, StandardCharsets.UTF_8.toString())) {
 				while (inputScaner.hasNextLine()) {
-					final List<Set<Integer>> graphs = new ArrayList<Set<Integer>>();
 					int n = Integer.parseInt(inputScaner.nextLine());
+					final List<Set<Integer>> graphs = new ArrayList<Set<Integer>>();
 					while (--n >= 0 && inputScaner.hasNextLine()) {
 						final String[] pair = inputScaner.nextLine().split(" ");
 						final Integer first = Integer.parseInt(pair[0]);
@@ -59,9 +59,7 @@ public class Task3 {
 				}
 			}
 			printStream.flush();
-		} catch (
-
-		UnsupportedEncodingException ex) {
+		} catch (UnsupportedEncodingException ex) {
 			throw new RuntimeException(ex);
 		}
 	}
