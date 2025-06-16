@@ -1,6 +1,9 @@
 package lsn.io.backend;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -8,7 +11,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
 
 public class Task3 {
@@ -21,13 +23,14 @@ public class Task3 {
 	protected static void calculateInputToOutputStreams(final InputStream inputStream,
 			final OutputStream outputStream) {
 		try (final PrintStream printStream = new PrintStream(outputStream, false, StandardCharsets.UTF_8.toString())) {
-			try (final Scanner inputScaner = new Scanner(inputStream, StandardCharsets.UTF_8.toString())) {
-				while (inputScaner.hasNextLine()) {
-					int n = Integer.parseInt(inputScaner.nextLine());
+			try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))) {
+				String line;
+				while ((line = bufferedReader.readLine()) != null) {
+					int n = Integer.parseInt(line);
 					final List<Set<Integer>> graphs = new ArrayList<Set<Integer>>();
 					boolean founded = false;
-					while (--n >= 0 && inputScaner.hasNextLine()) {
-						final String[] pair = inputScaner.nextLine().split(" ");
+					while (--n >= 0 && ((line = bufferedReader.readLine()) != null)) {
+						final String[] pair = line.split(" ");
 						final Integer first = Integer.parseInt(pair[0]);
 						final Integer second = Integer.parseInt(pair[1]);
 						final Set<Integer> prev = graphs.stream()
@@ -61,6 +64,8 @@ public class Task3 {
 					}
 					printStream.println(graphs.size());
 				}
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
 			}
 			printStream.flush();
 		} catch (UnsupportedEncodingException ex) {

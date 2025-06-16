@@ -1,6 +1,9 @@
 package lsn.io.backend;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
@@ -9,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Scanner;
 
 public class Task2 {
 
@@ -20,9 +22,10 @@ public class Task2 {
 	protected static void calculateInputToOutputStreams(final InputStream inputStream,
 			final OutputStream outputStream) {
 		try (final PrintStream printStream = new PrintStream(outputStream, false, StandardCharsets.UTF_8.toString())) {
-			try (final Scanner inputScaner = new Scanner(inputStream, StandardCharsets.UTF_8.toString())) {
-				while (inputScaner.hasNextLine()) {
-					final List<Integer> list = Arrays.stream(inputScaner.nextLine().split(" ")).filter(i -> {
+			try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))) {
+				String line;
+				while ((line = bufferedReader.readLine()) != null) {
+					final List<Integer> list = Arrays.stream(line.split(" ")).filter(i -> {
 						try {
 							Integer.parseInt(i);
 						} catch (Exception ex) {
@@ -46,6 +49,8 @@ public class Task2 {
 						printStream.println(i[0] + " " + i[1]);
 					});
 				}
+			} catch (IOException ex) {
+				throw new RuntimeException(ex);
 			}
 			printStream.flush();
 		} catch (UnsupportedEncodingException ex) {
