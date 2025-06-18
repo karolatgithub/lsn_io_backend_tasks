@@ -25,7 +25,7 @@ public class Task1 {
 				@Override
 				public void analyzeStream(final IntStream intStream, final PrintStream printStream) {
 					Task1.analyzeStream(intStream, printStream);
-				};
+				}
 			}));
 
 		} catch (IOException ex) {
