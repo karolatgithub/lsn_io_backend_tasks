@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -19,57 +18,63 @@ public class Task3 {
 		calculateInputToOutputStreams(System.in, System.out);
 	}
 
-	@SuppressWarnings("serial")
 	protected static void calculateInputToOutputStreams(final InputStream inputStream,
 			final OutputStream outputStream) {
-		try (final PrintStream printStream = new PrintStream(outputStream, false, StandardCharsets.UTF_8.toString())) {
-			try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))) {
-				String line;
-				while ((line = bufferedReader.readLine()) != null) {
-					int n = Integer.parseInt(line);
-					final List<Set<Integer>> graphs = new ArrayList<Set<Integer>>();
-					boolean founded = false;
-					while (--n >= 0 && ((line = bufferedReader.readLine()) != null)) {
-						final String[] pair = line.split(" ");
-						final Integer first = Integer.parseInt(pair[0]);
-						final Integer second = Integer.parseInt(pair[1]);
-						final Set<Integer> prev = graphs.stream()
-								.filter(set -> set.contains(first) || set.contains(second)).findFirst().orElse(null);
-						if (prev != null) {
-							prev.add(first);
-							prev.add(second);
-							founded = true;
-						} else {
-							graphs.add(new HashSet<Integer>() {
-								{
-									add(first);
-									add(second);
-								}
-							});
-						}
-					}
-					if (founded) {
-						int index = graphs.size();
-						while (--index >= 1) {
-							final Set<Integer> last = graphs.get(index);
-							int j = index;
-							while (--j >= 0) {
-								final Set<Integer> first = graphs.get(j);
-								if (first.stream().filter(i -> last.contains(i)).findFirst().isPresent()) {
-									first.addAll(last);
-									graphs.remove(index);
-								}
-							}
-						}
-					}
-					printStream.println(graphs.size());
-				}
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
+		try (final PrintStream printStream = new PrintStream(outputStream, false, StandardCharsets.UTF_8.toString());
+				final BufferedReader bufferedReader = new BufferedReader(
+						new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+			String line;
+			while ((line = bufferedReader.readLine()) != null) {
+				final int size = processGraphInput(bufferedReader, Integer.parseInt(line));
+				printStream.println(size);
 			}
+
 			printStream.flush();
-		} catch (UnsupportedEncodingException ex) {
+		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
+	}
+
+	@SuppressWarnings("serial")
+	private static int processGraphInput(final BufferedReader bufferedReader, int n) throws IOException {
+		final List<Set<Integer>> graphs = new ArrayList<Set<Integer>>();
+		while (--n >= 0) {
+			final String[] pair = bufferedReader.readLine().split(" ");
+			final Integer first = Integer.parseInt(pair[0]);
+			final Integer second = Integer.parseInt(pair[1]);
+
+			final Set<Integer> prev = graphs.stream().filter(set -> set.contains(first) || set.contains(second))
+					.findFirst().orElse(null);
+
+			if (prev != null) {
+				prev.add(first);
+				prev.add(second);
+			} else {
+				graphs.add(new HashSet<Integer>() {
+					{
+						add(first);
+						add(second);
+					}
+				});
+			}
+		}
+		return mergeGraphs(graphs);
+	}
+
+	private static int mergeGraphs(final List<Set<Integer>> graphs) {
+		for (int i = graphs.size() - 1; i > 0; i--) {
+			final Set<Integer> last = graphs.get(i);
+
+			for (int j = i - 1; j >= 0; j--) {
+				final Set<Integer> first = graphs.get(j);
+				if (first.stream().anyMatch(last::contains)) {
+					first.addAll(last);
+					graphs.remove(i);
+					break;
+				}
+			}
+		}
+		return graphs.size();
 	}
 }

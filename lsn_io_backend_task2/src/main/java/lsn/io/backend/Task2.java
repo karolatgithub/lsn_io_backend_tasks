@@ -11,7 +11,10 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 import java.util.List;
+import java.util.stream.IntStream;
 
 public class Task2 {
 
@@ -21,40 +24,39 @@ public class Task2 {
 
 	protected static void calculateInputToOutputStreams(final InputStream inputStream,
 			final OutputStream outputStream) {
-		try (final PrintStream printStream = new PrintStream(outputStream, false, StandardCharsets.UTF_8.toString())) {
-			try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream, "UTF-8"))) {
-				String line;
-				while ((line = bufferedReader.readLine()) != null) {
-					final List<Integer> list = Arrays.stream(line.split(" ")).filter(i -> {
-						try {
-							Integer.parseInt(i);
-						} catch (Exception ex) {
-							return false;
-						}
-						return true;
-					}).mapToInt(Integer::parseInt).collect(ArrayList<Integer>::new, ArrayList::add, ArrayList::addAll);
-					final Collection<Integer[]> results = new ArrayList<Integer[]>();
-					int index = -1;
-					while (++index < list.size()) {
-						final Integer first = list.get(index);
-						list.stream().skip(index + 1).filter(i -> (i + first == 13)).forEach(i -> {
-							if (first < i) {
-								results.add(new Integer[] { first, i });
-							} else {
-								results.add(new Integer[] { i, first });
-							}
-						});
-					}
-					results.stream().sorted((i, j) -> i[0].compareTo(j[0])).forEach(i -> {
-						printStream.println(i[0] + " " + i[1]);
-					});
-				}
-			} catch (IOException ex) {
-				throw new RuntimeException(ex);
-			}
-			printStream.flush();
-		} catch (UnsupportedEncodingException ex) {
+		try (final PrintStream printStream = new PrintStream(outputStream, false, StandardCharsets.UTF_8.toString());
+				final BufferedReader bufferedReader = new BufferedReader(
+						new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+			bufferedReader.lines().map(Task2::parseLineToIntegers).forEach(list -> {
+				findSortedStreamPairsWithSum13(list).forEach(i -> printStream.println(i[0] + " " + i[1]));
+			});
+
+		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
+	}
+
+	private static List<Integer> parseLineToIntegers(final String line) {
+		return Arrays.stream(line.split(" ")).filter(Utils::isInteger).map(Integer::parseInt)
+				.collect(Collectors.toList());
+	}
+
+	private static Stream<Integer[]> findSortedStreamPairsWithSum13(final List<Integer> numbers) {
+		final List<Integer[]> pairs = new ArrayList<Integer[]>();
+		for (int i = 0; i < numbers.size(); i++) {
+			final Integer first = numbers.get(i);
+			for (int j = i + 1; j < numbers.size(); j++) {
+				final Integer second = numbers.get(j);
+				if (first + second == 13) {
+					if (first < second) {
+						pairs.add(new Integer[] { first, second });
+					} else {
+						pairs.add(new Integer[] { second, first });
+					}
+				}
+			}
+		}
+		return pairs.stream().sorted((i, j) -> i[0].compareTo(j[0]));
 	}
 }
