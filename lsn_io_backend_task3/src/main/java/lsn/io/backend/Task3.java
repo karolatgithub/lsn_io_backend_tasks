@@ -26,8 +26,7 @@ public class Task3 {
 
 			String line;
 			while ((line = bufferedReader.readLine()) != null) {
-				final int size = processGraphInput(bufferedReader, Integer.parseInt(line));
-				printStream.println(size);
+				printStream.println(processGraphInput(bufferedReader, Integer.parseInt(line)));
 			}
 
 			printStream.flush();
@@ -39,17 +38,18 @@ public class Task3 {
 	@SuppressWarnings("serial")
 	private static int processGraphInput(final BufferedReader bufferedReader, int n) throws IOException {
 		final List<Set<Integer>> graphs = new ArrayList<Set<Integer>>();
-		while (--n >= 0) {
-			final String[] pair = bufferedReader.readLine().split(" ");
+		boolean founded = false;
+		String line;
+		while (--n >= 0 && ((line = bufferedReader.readLine()) != null)) {
+			final String[] pair = line.split(" ");
 			final Integer first = Integer.parseInt(pair[0]);
 			final Integer second = Integer.parseInt(pair[1]);
-
-			final Set<Integer> prev = graphs.stream().filter(set -> set.contains(first) || set.contains(second))
-					.findFirst().orElse(null);
-
+			final Set<Integer> prev = graphs.stream().filter(g -> g.contains(first) || g.contains(second)).findFirst()
+					.orElse(null);
 			if (prev != null) {
 				prev.add(first);
 				prev.add(second);
+				founded = true;
 			} else {
 				graphs.add(new HashSet<Integer>() {
 					{
@@ -59,22 +59,24 @@ public class Task3 {
 				});
 			}
 		}
-		return mergeGraphs(graphs);
+		if (founded) {
+			mergeGraphs(graphs);
+		}
+		return graphs.size();
 	}
 
-	private static int mergeGraphs(final List<Set<Integer>> graphs) {
-		for (int i = graphs.size() - 1; i > 0; i--) {
-			final Set<Integer> last = graphs.get(i);
-
-			for (int j = i - 1; j >= 0; j--) {
+	private static void mergeGraphs(final List<Set<Integer>> graphs) {
+		int index = graphs.size();
+		while (--index > 0) {
+			final Set<Integer> last = graphs.get(index);
+			int j = index;
+			while (--j >= 0) {
 				final Set<Integer> first = graphs.get(j);
-				if (first.stream().anyMatch(last::contains)) {
+				if (first.stream().filter(i -> last.contains(i)).findFirst().isPresent()) {
 					first.addAll(last);
-					graphs.remove(i);
-					break;
+					graphs.remove(index);
 				}
 			}
 		}
-		return graphs.size();
 	}
 }
