@@ -8,6 +8,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.stream.IntStream;
+import java.lang.StringBuilder;
 
 public class Task1 {
 
@@ -56,10 +57,10 @@ public class Task1 {
 
 			if (count[0] > 0) {
 				printStream.println();
-				printStream.println("count: " + count[0]);
-				printStream.println("distinct: " + distinct[0]);
-				printStream.println("min: " + min[0]);
-				printStream.println("max: " + max[0]);
+				printStream.println(new StringBuilder().append("count: ").append(count[0]).toString());
+				printStream.println(new StringBuilder().append("distinct: ").append(distinct[0]).toString());
+				printStream.println(new StringBuilder().append("min: ").append(min[0]).toString());
+				printStream.println(new StringBuilder().append("max: ").append(max[0]).toString());
 			}
 		}
 	}

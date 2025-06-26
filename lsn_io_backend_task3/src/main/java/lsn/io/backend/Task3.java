@@ -41,9 +41,9 @@ public class Task3 {
 		boolean founded = false;
 		String line;
 		while (--n >= 0 && ((line = bufferedReader.readLine()) != null)) {
-			final String[] pair = line.split(" ");
-			final Integer first = Integer.parseInt(pair[0]);
-			final Integer second = Integer.parseInt(pair[1]);
+			final int i = line.indexOf(' ');
+			final Integer first = Integer.parseInt(line.substring(0, i));
+			final Integer second = Integer.parseInt(line.substring(i + 1));
 			final Set<Integer> prev = graphs.stream().filter(g -> g.contains(first) || g.contains(second)).findFirst()
 					.orElse(null);
 			if (prev != null) {

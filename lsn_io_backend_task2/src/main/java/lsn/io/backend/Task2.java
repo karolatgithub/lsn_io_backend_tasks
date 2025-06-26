@@ -8,11 +8,10 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.List;
 
 public class Task2 {
 
@@ -36,7 +35,7 @@ public class Task2 {
 	}
 
 	private static List<Integer> parseLineToIntegers(final String line) {
-		return Arrays.stream(line.split(" ")).filter(Utils::isInteger).map(Integer::parseInt)
+		return Stream.of(line.split(" ", -1)).filter(Utils::isInteger).map(Integer::parseInt)
 				.collect(Collectors.toList());
 	}
 
@@ -54,7 +53,7 @@ public class Task2 {
 			});
 		}
 		pairs.stream().sorted((i, j) -> i[0].compareTo(j[0])).forEach(i -> {
-			printStream.println(i[0] + " " + i[1]);
+			printStream.println(new StringBuilder().append(i[0]).append(" ").append(i[1]).toString());
 		});
 	}
 }
