@@ -8,10 +8,10 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class Task2 {
 
@@ -35,7 +35,7 @@ public class Task2 {
 	}
 
 	private static List<Integer> parseLineToIntegers(final String line) {
-		return Stream.of(line.split(" ", -1)).filter(Utils::isInteger).map(Integer::parseInt)
+		return Arrays.stream(line.split(" ", -1)).filter(Utils::isInteger).map(Integer::parseInt)
 				.collect(Collectors.toList());
 	}
 
